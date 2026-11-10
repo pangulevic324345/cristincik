@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bună dimineața, Cristina! 🌿🍰</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Patrick+Hand&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg-paper: #fbf7ee;
+      --card-bg: #fffdfa;
+      --primary: #5a7d65;
+      --accent: #d8695b;
+      --choco: #4a2c1b;
+      --ink: #2d312e;
+      --line: #e3dac9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-paper);
+      background-image:
+        radial-gradient(#e6decb 1px, transparent 1px),
+        linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 20px 20px, 40px 40px;
+      font-family: 'Patrick Hand', cursive;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .doodle-element {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .cat-top-left {
+      top: -6px;
+      left: 12px;
+      width: 76px;
+      transform-origin: top center;
+      animation: catPeeking 4s ease-in-out infinite alternate;
+    }
+
+    .cat-sleeping {
+      bottom: 12px;
+      left: 16px;
+      width: 84px;
+      opacity: 0.9;
+    }
+
+    .parrot-right {
+      top: 18px;
+      right: 14px;
+      width: 82px;
+      transform-origin: bottom center;
+      animation: birdWiggle 3.2s ease-in-out infinite;
+    }
+
+    @keyframes catPeeking {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(4px) rotate(-2deg); }
+      100% { transform: translateY(0) rotate(2deg); }
+    }
+
+    @keyframes birdWiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(4deg); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 580px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .music-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 2px dashed #caa573;
+      border-radius: 16px;
+      padding: 8px 14px;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.04);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .music-bar:hover {
+      transform: scale(1.02);
+    }
+    .music-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      color: #7a5c32;
+    }
+    .music-icon {
+      font-size: 1.5rem;
+      animation: pulse 1.8s infinite;
+    }
+    .music-btn {
+      background: #caa573;
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.05rem;
+      cursor: pointer;
+    }
+
+    .notebook-card {
+      background: var(--card-bg);
+      border: 2px solid var(--line);
+      border-radius: 20px;
+      padding: 30px 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05), 3px 4px 0 #ded4be;
+      position: relative;
+    }
+
+    .washi-tape {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-1deg);
+      background: rgba(188, 209, 185, 0.85);
+      width: 130px;
+      height: 26px;
+      border-left: 2px dashed rgba(0,0,0,0.1);
+      border-right: 2px dashed rgba(0,0,0,0.1);
+    }
+
+    .greeting-header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .greeting-header h1 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.7rem;
+      color: var(--primary);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .greeting-header p {
+      font-size: 1.3rem;
+      color: #7b857d;
+    }
+
+    .letter-body {
+      background: #fdfcf7;
+      border-left: 3px solid #89b394;
+      padding: 16px 18px;
+      border-radius: 0 14px 14px 0;
+      margin: 10px 0 24px 0;
+      font-size: 1.35rem;
+      line-height: 1.45;
+      color: #2b3a2f;
+      box-shadow: inset 1px 1px 4px rgba(0,0,0,0.02);
+    }
+
+    .tea-cake-area {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 14px;
+      margin: 20px 0;
+      background: #faf5ea;
+      padding: 18px 12px;
+      border-radius: 18px;
+      border: 1px dashed #d5c8b0;
+    }
+
+    .item-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .item-card:hover {
+      transform: translateY(-4px) scale(1.04);
+    }
+
+    .item-card:active {
+      transform: scale(0.95);
+    }
+
+    .item-svg {
+      width: 105px;
+      height: 105px;
+    }
+
+    .item-label {
+      font-size: 1.15rem;
+      margin-top: 6px;
+      color: var(--ink);
+      font-weight: bold;
+    }
+
+    .item-hint {
+      font-size: 0.9rem;
+      color: #8c8273;
+    }
+
+    .steam-line {
+      animation: steam 2.5s infinite ease-out;
+      transform-origin: bottom center;
+    }
+    .steam-2 { animation-delay: 0.8s; }
+    .steam-3 { animation-delay: 1.4s; }
+
+    @keyframes steam {
+      0% { opacity: 0; transform: translateY(0) scaleX(1); }
+      50% { opacity: 0.7; transform: translateY(-8px) scaleX(1.3); }
+      100% { opacity: 0; transform: translateY(-16px) scaleX(1.8); }
+    }
+
+    .status-toast {
+      min-height: 34px;
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--accent);
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .tickets-section {
+      margin-top: 10px;
+    }
+
+    .tickets-title {
+      font-size: 1.3rem;
+      color: #6c786e;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .ticket-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ticket {
+      background: #fff;
+      border: 2px dashed #c4d7c6;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ticket:hover {
+      background: #f7faf7;
+      border-color: #89b394;
+    }
+
+    .ticket-name {
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ticket-badge {
+      background: #edf4ee;
+      color: #4b6e54;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      font-weight: bold;
+    }
+
+    .ticket.claimed {
+      opacity: 0.6;
+      text-decoration: line-through;
+      background: #f5f5f5;
+      border-color: #ddd;
+    }
+
+    .ticket.claimed .ticket-badge {
+      background: #e2e2e2;
+      color: #777;
+    }
+
+    .big-forgive-btn {
+      width: 100%;
+      background: #d8695b;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 16px;
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #b34a3e;
+      margin-top: 14px;
+      transition: all 0.15s;
+    }
+
+    .big-forgive-btn:hover {
+      background: #e07769;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #b34a3e;
+    }
+
+    .big-forgive-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #b34a3e;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-box {
+      background: #fffefb;
+      border-radius: 20px;
+      max-width: 440px;
+      width: 100%;
+      padding: 30px 22px;
+      text-align: center;
+      border: 3px solid #6b8f75;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-box h2 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.6rem;
+      color: #4b6e54;
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      font-size: 1.3rem;
+      line-height: 1.4;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .close-modal-btn {
+      background: #4b6e54;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" src="muzik.mp3" preload="auto" loop></audio>
+
+  <svg class="doodle-element cat-top-left" viewBox="0 0 120 120">
+    <path d="M25,50 C25,25 95,25 95,50 C95,65 90,80 85,85 C75,92 45,92 35,85 C30,80 25,65 25,50 Z" fill="#f4ebd9" stroke="#4a3f35" stroke-width="3"/>
+    <polygon points="30,42 42,12 55,36" fill="#e8cfb8" stroke="#4a3f35" stroke-width="3"/>
+    <polygon points="90,42 78,12 65,36" fill="#e8cfb8" stroke="#4a3f35" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4" fill="#333"/>
+    <circle cx="75" cy="52" r="4" fill="#333"/>
+    <path d="M57,59 L63,59 L60,64 Z" fill="#d8695b"/>
+    <path d="M60,64 Q54,71 47,67 M60,64 Q66,71 73,67" stroke="#4a3f35" stroke-width="2.5" fill="none"/>
+    <path d="M28,82 C28,75 42,75 44,82 C46,88 28,90 28,82 Z" fill="#f4ebd9" stroke="#4a3f35" stroke-width="2.5"/>
+    <path d="M92,82 C92,75 78,75 76,82 C74,88 92,90 92,82 Z" fill="#f4ebd9" stroke="#4a3f35" stroke-width="2.5"/>
+  </svg>
+
+  <svg class="doodle-element parrot-right" viewBox="0 0 120 130">
+    <path d="M30,110 Q65,105 105,115" stroke="#7a5534" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M50,45 C50,22 85,22 85,50 C85,85 70,105 55,108 C45,108 40,85 50,45 Z" fill="#65b877" stroke="#2d5236" stroke-width="3"/>
+    <path d="M78,42 C85,42 96,48 94,62 C88,62 82,56 78,52 Z" fill="#f2a63b" stroke="#7a4613" stroke-width="2.5"/>
+    <circle cx="68" cy="38" r="4.5" fill="#111"/>
+    <circle cx="69.5" cy="36.5" r="1.5" fill="#fff"/>
+    <path d="M48,60 C38,72 45,95 56,88 C62,80 58,65 48,60 Z" fill="#4ea1e6" stroke="#1f4c73" stroke-width="2.5"/>
+    <path d="M55,108 L50,126 L60,110 Z" fill="#e65a4e"/>
+  </svg>
+
+  <svg class="doodle-element cat-sleeping" viewBox="0 0 120 90">
+    <path d="M25,60 C20,35 90,30 95,55 C98,72 80,82 60,82 C35,82 28,75 25,60 Z" fill="#faeed9" stroke="#4a3f35" stroke-width="3"/>
+    <polygon points="32,44 38,28 48,40" fill="#e8c7b0" stroke="#4a3f35" stroke-width="2.5"/>
+    <polygon points="50,40 60,28 66,44" fill="#e8c7b0" stroke="#4a3f35" stroke-width="2.5"/>
+    <path d="M36,52 Q42,56 46,52" stroke="#4a3f35" stroke-width="2" fill="none"/>
+    <path d="M54,52 Q58,56 64,52" stroke="#4a3f35" stroke-width="2" fill="none"/>
+    <text x="75" y="32" font-family="'Patrick Hand', cursive" font-size="16" fill="#888">zzz...</text>
+  </svg>
+
+  <div class="container">
+    <div class="music-bar" id="musicToggle">
+      <div class="music-info">
+        <span class="music-icon" id="musicNote">🎵</span>
+        <span id="musicStatusText">Apasă aici pentru surpriza noastră! 🎶</span>
+      </div>
+      <button class="music-btn" id="playBtnText">Pornește</button>
+    </div>
+
+    <div class="notebook-card">
+      <div class="washi-tape"></div>
+
+      <header class="greeting-header">
+        <h1>Bună dimineața, Cristina! 🌿</h1>
+        <p>Un mic gest cald pentru ziua ta</p>
+      </header>
+
+      <div class="letter-body">
+        „Iubirea mea, îmi cer scuze că nu ți-am spus „bună dimineața” ieri. Îmi doresc să încep fiecare dimineață trezindu-te cu sărutările mele. Te iubesc foarte mult.”
+      </div>
+
+      <div class="tea-cake-area">
+        <div class="item-card" id="teaBtn">
+          <svg class="item-svg" viewBox="0 0 120 120">
+            <g>
+              <path class="steam-line steam-1" d="M50,32 Q45,20 52,10" stroke="#87a890" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path class="steam-line steam-2" d="M60,30 Q66,18 60,8" stroke="#87a890" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path class="steam-line steam-3" d="M70,33 Q65,22 72,12" stroke="#87a890" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </g>
+            <ellipse cx="60" cy="100" rx="36" ry="6" fill="#e3dac9"/>
+            <path d="M35,46 L85,46 C83,78 78,92 60,92 C42,92 37,78 35,46 Z" fill="#6b8f75" stroke="#375240" stroke-width="3.5"/>
+            <path d="M82,54 C94,54 96,74 81,77" stroke="#375240" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M42,46 Q60,52 78,46" fill="#7fa68b"/>
+            <path d="M60,46 Q54,60 48,68" stroke="#d5c8b0" stroke-width="2" fill="none"/>
+            <rect x="42" y="68" width="13" height="15" rx="2" fill="#fdfcf7" stroke="#a4937c" stroke-width="1.5"/>
+            <text x="44" y="79" font-family="'Patrick Hand', cursive" font-size="9" fill="#5a7d65">Cris</text>
+          </svg>
+          <div class="item-label">Ceai Verde Cald 🍵</div>
+          <div class="item-hint">ia o înghițitură</div>
+        </div>
+
+        <div class="item-card" id="cakeBtn">
+          <svg class="item-svg" viewBox="0 0 120 120">
+            <ellipse cx="60" cy="98" rx="42" ry="7" fill="#e3dac9"/>
+            <path d="M24,78 L60,38 L96,78 Z" fill="#4a2c1b" stroke="#2d170b" stroke-width="3"/>
+            <path d="M24,78 Q60,88 96,78 L96,86 Q60,96 24,86 Z" fill="#381f11" stroke="#2d170b" stroke-width="2.5"/>
+            <path d="M34,67 Q60,74 86,67" stroke="#caa27d" stroke-width="3" fill="none"/>
+            <path d="M28,78 C35,68 40,84 50,72 C58,85 70,70 80,82 C88,74 93,82 96,78" fill="#31190c"/>
+            <path d="M60,36 C55,25 68,23 60,36 Z" fill="#d84742"/>
+            <circle cx="60" cy="30" r="1.2" fill="#fff"/>
+            <path d="M57,26 Q60,22 63,26" stroke="#488c57" stroke-width="2" fill="none"/>
+          </svg>
+          <div class="item-label">Tort de Ciocolată 🍰</div>
+          <div class="item-hint">ia o felie dulce</div>
+        </div>
+      </div>
+
+      <div class="status-toast" id="toastMsg">Fă o pauză și zâmbește! ✨</div>
+
+      <div class="tickets-section">
+        <div class="tickets-title">Cupoane de reconciliere pentru azi:</div>
+        <div class="ticket-list">
+          <div class="ticket" onclick="claimTicket(this)">
+            <span class="ticket-name">🤗 O îmbrățișare nesfârșită</span>
+            <span class="ticket-badge">Folosește</span>
+          </div>
+          <div class="ticket" onclick="claimTicket(this)">
+            <span class="ticket-name">🍰 Desertul tău preferat, garantat</span>
+            <span class="ticket-badge">Folosește</span>
+          </div>
+          <div class="ticket" onclick="claimTicket(this)">
+            <span class="ticket-name">☀️ „Bună dimineața” asigurat în fiecare zi</span>
+            <span class="ticket-badge">Folosește</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="big-forgive-btn" id="forgiveBtn">Mă ierți, iubirea mea? ❤️</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <h2>Mulțumesc, draga mea! 💖</h2>
+      <p>Îți promit că nicio dimineață nu va mai trece fără să-ți amintesc cât de minunată ești și cât de mult te iubesc!</p>
+      <button class="close-modal-btn" onclick="closeModal()">Te iubesc enorm! 🌿</button>
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    const playBtnText = document.getElementById('playBtnText');
+    const musicStatusText = document.getElementById('musicStatusText');
+    let isPlaying = false;
+
+    function startMusic() {
+      if (!isPlaying) {
+        audio.play().then(() => {
+          isPlaying = true;
+          playBtnText.textContent = 'Pauză';
+          musicStatusText.textContent = 'Melodia noastră cântă... 🤠🎺';
+        }).catch(() => {});
+      }
+    }
+
+    function toggleMusic() {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        playBtnText.textContent = 'Pornește';
+        musicStatusText.textContent = 'Muzică oprită. Apasă pentru a continua! 🎶';
+      } else {
+        audio.play().then(() => {
+          isPlaying = true;
+          playBtnText.textContent = 'Pauză';
+          musicStatusText.textContent = 'Melodia noastră cântă... 🤠🎺';
+        }).catch(() => {});
+      }
+    }
+
+    musicToggle.addEventListener('click', toggleMusic);
+
+    document.body.addEventListener('click', function autoPlayOnce() {
+      startMusic();
+      document.body.removeEventListener('click', autoPlayOnce);
+    }, { once: true });
+
+    const toast = document.getElementById('toastMsg');
+    let teaSips = 0;
+    const teaQuotes = [
+      'Ai luat o înghițitură de ceai verde cald... 🌿',
+      'Ceaiul acesta îți aduce liniște și energie bună! ✨',
+      'Un zâmbet cald pentru cea mai scumpă fată! 🍵',
+      'Să ai o zi la fel de senină ca sufletul tău! 💚'
+    ];
+
+    document.getElementById('teaBtn').addEventListener('click', () => {
+      startMusic();
+      teaSips++;
+      confetti({ particleCount: 15, spread: 45, origin: { y: 0.65 } });
+      toast.textContent = teaQuotes[teaSips % teaQuotes.length];
+    });
+
+    let cakeBites = 0;
+    const cakeQuotes = [
+      'O mușcătură delicioasă de tort cu multă ciocolată! 🍫',
+      'Pentru că meriți cel mai dulce desert din lume! 🍰',
+      'Dulceața asta e doar o zecime din cât ești tu de dulce! ❤️',
+      'Ciocolată pentru fericire maximă azi! 🍓'
+    ];
+
+    document.getElementById('cakeBtn').addEventListener('click', () => {
+      startMusic();
+      cakeBites++;
+      confetti({ particleCount: 20, spread: 55, origin: { y: 0.65 } });
+      toast.textContent = cakeQuotes[cakeBites % cakeQuotes.length];
+    });
+
+    function claimTicket(el) {
+      startMusic();
+      if (!el.classList.contains('claimed')) {
+        el.classList.add('claimed');
+        el.querySelector('.ticket-badge').textContent = 'Validat! ✔️';
+        confetti({ particleCount: 25, spread: 60, origin: { y: 0.7 } });
+        toast.textContent = 'Cupon activat cu succes! 🥰';
+      }
+    }
+
+    const forgiveBtn = document.getElementById('forgiveBtn');
+    const modal = document.getElementById('modalOverlay');
+
+    forgiveBtn.addEventListener('click', () => {
+      startMusic();
+      confetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.55 },
+        colors: ['#5a7d65', '#d8695b', '#f2a63b', '#caa573']
+      });
+      modal.style.display = 'flex';
+    });
+
+    function closeModal() {
+      modal.style.display = 'none';
+      toast.textContent = 'Te iubesc din tot sufletul! ❤️';
+    }
+  </script>
+</body>
+</html>
